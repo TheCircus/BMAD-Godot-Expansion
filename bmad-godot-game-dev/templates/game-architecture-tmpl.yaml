@@ -1,0 +1,366 @@
+template:
+  id: game-architecture-template-v3
+  name: Game Architecture Document
+  version: 3.0
+  output:
+    format: markdown
+    filename: docs/game-architecture.md
+    title: "{{project_name}} Game Architecture Document"
+
+workflow:
+  mode: interactive
+  elicitation: advanced-elicitation
+
+sections:
+  - id: introduction
+    title: Introduction
+    instruction: |
+      If available, review any provided relevant documents to gather all relevant context before beginning. At a minimum you should locate and review: Game Design Document (GDD), Technical Preferences. If these are not available, ask the user what docs will provide the basis for the game architecture.
+    sections:
+      - id: intro-content
+        content: |
+          This document outlines the complete technical architecture for {{project_name}}, a game built with Godot Engine and GDScript. It serves as the technical foundation for AI-driven game development, ensuring consistency and scalability across all game systems.
+
+          This architecture is designed to support the gameplay mechanics defined in the Game Design Document while maintaining stable performance and cross-platform compatibility, whether the game is developed in 2D or 3D.
+      - id: starter-template
+        title: Starter Template or Existing Project
+        instruction: |
+          Before proceeding further with game architecture design, check if the project is based on a Godot template or existing codebase:
+
+          1. Review the GDD and brainstorming brief for any mentions of:
+          - Godot project templates or demo projects
+          - Existing Godot projects being used as a foundation
+          - Asset Library packages or game development frameworks
+          - Previous game projects to be cloned or adapted
+
+          2. If a starter template or existing project is mentioned:
+          - Ask the user to provide access via one of these methods:
+            - Link to the Godot demo project
+            - Upload/attach the project files (for small projects)
+            - Share a link to the project repository (GitHub, GitLab, etc.)
+          - Analyze the starter/existing project to understand:
+            - Pre-configured Godot version and renderer settings
+            - Project structure and scene organization patterns
+            - Built-in plugins and dependencies
+            - Existing architectural patterns and conventions
+            - Any limitations or constraints imposed by the starter
+          - Use this analysis to inform and align your architecture decisions
+
+          3. If no starter template is mentioned but this is a greenfield project:
+          - Suggest appropriate Godot project structure based on the target platform
+          - Recommend relevant demo projects or learning resources
+          - Consider Godot Asset Library resources for common game mechanics
+
+  - id: target-platforms
+    title: Target Platforms and Performance Requirements
+    instruction: Analyze the GDD's platform requirements and establish technical baselines
+    sections:
+      - id: platform-overview
+        title: Platform Overview
+        instruction: |
+          Based on the GDD, identify all target platforms for this game. For each platform, document:
+          - Primary target devices (e.g., PC, Mobile, Web)
+          - Minimum and recommended system specifications
+          - Input methods (keyboard/mouse, touch, gamepad)
+          - Distribution platforms (Steam, itch.io, mobile app stores, web)
+          - Platform-specific requirements or constraints
+
+      - id: performance-targets
+        title: Performance Targets
+        instruction: |
+          Establish performance baselines for each target platform:
+          - Frame rate targets (30fps minimum, 60fps target, etc.)
+          - Memory usage limits per platform
+          - Loading time requirements
+          - Battery life considerations (mobile)
+          - Network requirements (if multiplayer/online features)
+
+  - id: godot-setup
+    title: Godot Project Setup
+    instruction: Define the foundational Godot project configuration
+    sections:
+      - id: godot-version
+        title: Godot Version and Configuration
+        instruction: |
+          Document the Godot setup:
+          - Godot version (recommend 4.x LTS for stability)
+          - Renderer selection (Forward+ for desktop, Mobile for mobile/web)
+          - Project settings configuration
+          - Input map setup for target platforms
+
+      - id: project-structure
+        title: Project Structure
+        instruction: |
+          Design a scalable project folder structure:
+          ```
+          project/
+          ├── scenes/          # Game scenes (.tscn files)
+          │   ├── main/        # Main menu, settings, etc.
+          │   ├── levels/      # Game levels and gameplay scenes
+          │   ├── ui/          # UI components and HUD
+          │   └── components/  # Reusable scene components
+          ├── scripts/         # GDScript files (.gd)
+          │   ├── managers/    # Singleton managers (GameManager, etc.)
+          │   ├── components/  # Reusable script components
+          │   ├── data/        # Custom Resource classes
+          │   └── utils/       # Utility functions and helpers
+          ├── assets/          # Game assets
+          │   ├── 2d/          # For 2D: sprites, textures, animations
+          │   ├── 3d/          # For 3D: models, materials, shaders
+          │   ├── audio/       # Music and sound effects
+          │   └── fonts/       # Font files
+          ├── data/            # Game data files
+          │   └── resources/   # .tres resource files
+          └── tests/           # Unit and integration tests
+              ├── unit/        # Unit tests using GUT
+              └── integration/ # Integration tests
+          ```
+
+  - id: core-architecture
+    title: Core Game Architecture
+    instruction: Design the fundamental system architecture following Godot best practices
+    sections:
+      - id: scene-architecture
+        title: Scene Architecture
+        instruction: |
+          Design the scene hierarchy and organization:
+          - Main scene structure and autoloads
+          - Scene transition management
+          - UI layer organization (CanvasLayer usage)
+          - Scene instancing patterns for reusable components
+
+      - id: node-patterns
+        title: Node and Component Patterns
+        instruction: |
+          Establish patterns for game object architecture:
+          - Component composition using child nodes
+          - Signal-based communication patterns
+          - Node group usage for categorization
+          - Scene inheritance and variation patterns
+
+      - id: singleton-systems
+        title: Singleton Systems (AutoLoad)
+        instruction: |
+          Design singleton managers for global systems:
+          - GameManager: Game state, scoring, level management
+          - AudioManager: Music and sound effect management
+          - SaveManager: Save/load game data
+          - SceneManager: Scene transition handling
+          - InputManager: Input handling and action management
+
+  - id: gameplay-systems
+    title: Gameplay Systems Architecture
+    instruction: Design specific game mechanics based on the GDD
+    sections:
+      - id: player-system
+        title: Player System
+        instruction: |
+          Design the player character architecture:
+          - Player scene structure (CharacterBody2D/3D, RigidBody2D/3D based on game dimension)
+          - Movement and physics handling (2D or 3D physics)
+          - Animation system integration (AnimationPlayer, AnimationTree)
+          - Input processing and state management
+          - Camera system (Camera2D for 2D, Camera3D for 3D with appropriate controls)
+
+      - id: game-mechanics
+        title: Core Game Mechanics
+        instruction: |
+          For each major game mechanic identified in the GDD:
+          - System design and node structure
+          - Data flow and state management
+          - Integration with other systems
+          - Performance considerations
+
+      - id: ui-system
+        title: User Interface System
+        instruction: |
+          Design the UI architecture:
+          - UI scene organization and layering
+          - Theme and styling approach
+          - Menu system and navigation
+          - HUD and in-game UI elements
+
+  - id: data-management
+    title: Data Management and Resources
+    instruction: Design data architecture for game content and state
+    sections:
+      - id: resource-system
+        title: Resource System
+        instruction: |
+          Design custom Resource classes for game data:
+          - Game configuration data (difficulty, settings)
+          - Level data and progression
+          - Character/enemy statistics
+          - Item and inventory data
+
+      - id: save-system
+        title: Save System
+        instruction: |
+          Design the save/load architecture:
+          - Save data structure and format
+          - Save file location and naming
+          - Versioning for save compatibility
+          - Backup and recovery strategies
+
+  - id: performance-optimization
+    title: Performance Optimization Strategy
+    instruction: Plan for performance from the architecture level
+    sections:
+      - id: rendering-optimization
+        title: Rendering and Graphics Optimization
+        instruction: |
+          Design for optimal rendering performance:
+          - Texture management and compression
+          - Sprite batching and draw call optimization
+          - Particle system usage and limits
+          - Camera and viewport optimization
+
+      - id: memory-management
+        title: Memory Management
+        instruction: |
+          Plan memory usage and optimization:
+          - Object pooling for frequently created objects
+          - Resource loading and unloading strategies
+          - Garbage collection optimization
+          - Memory profiling and monitoring
+
+      - id: cpu-optimization
+        title: CPU Optimization
+        instruction: |
+          Design for CPU performance:
+          - Process scheduling (_process vs _physics_process)
+          - Signal vs polling patterns
+          - Multithreading considerations
+          - Performance profiling integration
+
+  - id: platform-specific
+    title: Platform-Specific Considerations
+    instruction: Address platform-specific requirements and optimizations
+    sections:
+      - id: mobile-optimization
+        title: Mobile Platform Optimization
+        instruction: |
+          If targeting mobile platforms:
+          - Touch input handling and UI scaling
+          - Battery life optimization
+          - Performance scaling for different devices
+          - App lifecycle management (pause/resume)
+
+      - id: web-deployment
+        title: Web Platform Considerations
+        instruction: |
+          If targeting web deployment:
+          - File size optimization and streaming
+          - Browser compatibility considerations
+          - Input handling for web browsers
+          - Loading screen and progress indicators
+
+  - id: testing-architecture
+    title: Testing and Quality Assurance
+    instruction: Plan testing strategy and tooling
+    sections:
+      - id: automated-testing
+        title: Automated Testing Strategy
+        instruction: |
+          Design testing approach:
+          - Unit testing with GUT framework
+          - Integration testing for game systems
+          - Performance testing and benchmarking
+          - Automated build and testing pipeline
+
+      - id: debugging-tools
+        title: Debugging and Development Tools
+        instruction: |
+          Plan development and debugging support:
+          - Debug UI and console commands
+          - Performance monitoring and profiling
+          - Logging and error reporting
+          - Development mode features
+
+  - id: deployment-architecture
+    title: Deployment and Distribution
+    instruction: Plan build and deployment strategy
+    sections:
+      - id: build-pipeline
+        title: Build Pipeline
+        instruction: |
+          Design the build and export process:
+          - Export templates and configurations
+          - Asset optimization pipeline
+          - Platform-specific build settings
+          - Version management and tagging
+
+      - id: distribution-strategy
+        title: Distribution Strategy
+        instruction: |
+          Plan distribution approach:
+          - Target distribution platforms
+          - Update and patching strategy
+          - Analytics and telemetry integration
+          - User feedback collection systems
+
+  - id: development-standards
+    title: Development Standards and Guidelines
+    instruction: Establish coding and development standards
+    sections:
+      - id: coding-standards
+        title: GDScript Coding Standards
+        instruction: |
+          Establish coding conventions:
+          - Naming conventions (snake_case for variables/functions, PascalCase for classes)
+          - Code organization and structure
+          - Comment and documentation standards
+          - Error handling patterns
+
+      - id: scene-standards
+        title: Scene Organization Standards
+        instruction: |
+          Define scene creation standards:
+          - Node naming conventions
+          - Scene composition patterns
+          - Signal connection standards
+          - Resource usage guidelines
+
+  - id: risk-assessment
+    title: Risk Assessment and Mitigation
+    instruction: Identify and plan for potential technical risks
+    sections:
+      - id: technical-risks
+        title: Technical Risk Analysis
+        instruction: |
+          Identify potential risks:
+          - Performance bottlenecks and scalability limits
+          - Platform compatibility issues
+          - Third-party dependency risks
+          - Team skill gaps and learning curves
+
+      - id: mitigation-strategies
+        title: Risk Mitigation Strategies
+        instruction: |
+          Plan mitigation approaches:
+          - Prototype critical systems early
+          - Performance testing milestones
+          - Fallback plans for complex features
+          - Knowledge sharing and documentation
+
+  - id: implementation-roadmap
+    title: Implementation Roadmap
+    instruction: Create development phases and priorities
+    sections:
+      - id: development-phases
+        title: Development Phase Planning
+        instruction: |
+          Break down implementation into phases:
+          - Phase 1: Core systems and foundation
+          - Phase 2: Gameplay mechanics implementation
+          - Phase 3: Content creation and level building
+          - Phase 4: Polish, optimization, and testing
+
+      - id: story-breakdown
+        title: Story Breakdown Guidance
+        instruction: |
+          Provide guidance for breaking this architecture into implementation stories:
+          - Recommended story size and scope
+          - Dependencies between architectural components
+          - Testing requirements for each story
+          - Integration points and validation criteria
