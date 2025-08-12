@@ -773,9 +773,9 @@ Use the **expansion-creator** pack to build your own game development extensions
 ## Getting Help with Game Development
 
 - **Commands**: Use `*/*help` in any environment to see available game development commands
-- **Game Agent Switching**: Use `*/*switch game-agent-name` with orchestrator for role changes
-- **Game Documentation**: Check `docs/` folder for Godot project-specific context
-- **Game Community**: Discord and GitHub resources available for game development support
-- **Game Contributing**: See `CONTRIBUTING.md` for full game development guidelines
+- **Agent Switching**: Use `*/*switch game-agent-name` with orchestrator for role changes
+- **Documentation**: Check `docs/` folder for Godot project-specific context
+- **Community**: Discord and GitHub resources available for game development support
+- **Contributing**: See `CONTRIBUTING.md` for full game development guidelines
 
 This knowledge base provides the foundation for effective game development using the BMad-Method framework with specialized focus on game creation using Godot Engine and GDScript for both 2D and 3D games.
