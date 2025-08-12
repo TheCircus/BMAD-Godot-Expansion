@@ -167,7 +167,7 @@ func take_damage(amount: int):
 **Custom Resource Classes:**
 
 ```gdscript
-# WeaponData.gd - ScriptableObject equivalent
+# WeaponData.gd - Custom Resource (Godot's equivalent to Unity's ScriptableObject)
 extends Resource
 class_name WeaponData
 
@@ -242,7 +242,7 @@ func end_game():
 extends Node
 class_name ObjectPool
 
-@export var prefab_scene: PackedScene
+@export var scene_to_pool: PackedScene
 @export var initial_pool_size: int = 20
 
 var available_objects: Array[Node] = []
@@ -251,7 +251,7 @@ var active_objects: Array[Node] = []
 func _ready():
     # Pre-populate the pool
     for i in initial_pool_size:
-        var obj = prefab_scene.instantiate()
+        var obj = scene_to_pool.instantiate()
         obj.set_process(false)
         obj.visible = false
         available_objects.push_back(obj)
@@ -264,7 +264,7 @@ func get_pooled_object() -> Node:
         obj = available_objects.pop_back()
     else:
         # Pool exhausted, create new object
-        obj = prefab_scene.instantiate()
+        obj = scene_to_pool.instantiate()
         add_child(obj)
     
     active_objects.push_back(obj)
@@ -380,7 +380,7 @@ func load_sprite_with_fallback(sprite_path: String) -> Texture2D:
     if not sprite:
         push_warning("Failed to load sprite: " + sprite_path)
         # Load default sprite
-        sprite = load("res://art/default_sprite.png") as Texture2D
+        sprite = load("res://assets/shared/default_sprite.png") as Texture2D
         
         if not sprite:
             push_error("Critical: Default sprite missing!")
@@ -495,7 +495,7 @@ project/
 │   └── data/
 │       ├── WeaponData.gd
 │       └── EnemyData.gd
-├── art/
+├── assets/
 │   ├── 2d/              # For 2D games: sprites, textures, animations
 │   │   ├── sprites/
 │   │   └── textures/

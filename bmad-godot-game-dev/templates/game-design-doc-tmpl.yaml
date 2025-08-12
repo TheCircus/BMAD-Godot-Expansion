@@ -148,8 +148,8 @@ sections:
               
               **Script Architecture:**
               
-              - {{script_name}}.cs - {{responsibility}}
-              - {{manager_script}}.cs - {{management_role}}
+              - {{script_name}}.gd - {{responsibility}}
+              - {{manager_script}}.gd - {{management_role}}
             examples:
               - "Components Needed: Rigidbody2D, BoxCollider2D, PlayerMovement script"
               - "Physics Requirements: 2D Physics material for ground friction, Gravity scale 3"
@@ -182,15 +182,15 @@ sections:
           
           **Save Data Structure:**
           
-          ```csharp
-          [System.Serializable]
-          public class PlayerProgress
-          {
-              {{progress_fields}}
-          }
+          ```gdscript
+          # PlayerProgress.gd - Custom Resource for save data
+          extends Resource
+          class_name PlayerProgress
+          
+          @export var {{progress_fields}}
           ```
         examples:
-          - public int currentLevel, public bool[] unlockedAbilities, public float totalPlayTime
+          - current_level: int = 1, unlocked_abilities: Array[bool] = [], total_play_time: float = 0.0
       - id: difficulty-curve
         title: Difficulty Curve
         instruction: Provide specific parameters for balancing that can be implemented as Godot custom resources
@@ -283,12 +283,12 @@ sections:
       - id: godot-configuration
         title: Godot Project Configuration
         template: |
-          **Godot Version:** {{godot_version}} (LTS recommended)
-          **Render Pipeline:** {{Built-in|URP|HDRP}}
-          **Input System:** {{Legacy|New Input System|Both}}
+          **Godot Version:** {{godot_version}} (4.x LTS recommended)
+          **Renderer:** {{Forward+|Forward Mobile|Compatibility}}
+          **Input System:** {{Godot Input Actions}}
           **Physics:** {{2D Only|3D Only|Hybrid}}
-          **Scripting Backend:** {{Mono|IL2CPP}}
-          **API Compatibility:** {{.NET Standard 2.1|.NET Framework}}
+          **Scripting:** {{GDScript|C#|Mixed}}
+          **Target Platform:** {{Desktop|Mobile|Web|Console}}
           
           **Required Packages:**
           
@@ -393,23 +393,26 @@ sections:
           **Folder Structure:**
           
           ```
-          Assets/
-          ├── _Project/
-          │   ├── Scripts/
-          │   │   ├── {{folder_structure}}
-          │   ├── Prefabs/
-          │   ├── Scenes/
+          project/
+          ├── scenes/
+          │   ├── {{folder_structure}}
+          ├── scripts/
+          ├── assets/
+          │   ├── 2d/ or 3d/
+          │   ├── audio/
           │   └── {{additional_folders}}
+          ├── data/
+          └── tests/
           ```
           
           **Naming Conventions:**
           
-          - Scripts: {{script_naming}}
-          - Prefabs: {{prefab_naming}}
-          - Scenes: {{scene_naming}}
+          - Scripts: {{script_naming}} (.gd files)
+          - Scenes: {{scene_naming}} (.tscn files)
+          - Resources: {{resource_naming}} (.tres files)
         examples:
-          - "Architecture: Component-Based with ScriptableObject data containers"
-          - "Scripts: PascalCase (PlayerController), Prefabs: Player_Prefab, Scenes: Level_01_Forest"
+          - "Architecture: Component-Based with Custom Resource data containers"
+          - "Scripts: PascalCase (PlayerController.gd), Scenes: Player.tscn, Resources: PlayerData.tres"
       - id: godot-systems-integration
         title: Godot Systems Integration
         template: |
@@ -445,7 +448,7 @@ sections:
           
           **Configuration Data:**
           
-          - **ScriptableObjects:** {{scriptable_object_usage}}
+          - **Custom Resources:** {{custom_resource_usage}}
           - **Settings Management:** {{settings_system}}
           - **Localization:** {{localization_approach}}
           
@@ -455,8 +458,8 @@ sections:
           - **Memory Pools:** {{pooling_objects}}
           - **Asset References:** {{asset_reference_system}}
         examples:
-          - "Save Data: JSON format with AES encryption, stored in persistent data path"
-          - "ScriptableObjects: Game settings, level configurations, character data"
+          - "Save Data: JSON format with AES encryption, stored in user://save_data/"
+          - "Custom Resources: Game settings, level configurations, character data"
 
   - id: development-phases
     title: Development Phases & Epic Planning
@@ -482,7 +485,7 @@ sections:
               - Godot project setup with proper folder structure and naming conventions
               - Core architecture implementation ({{architecture_pattern}})
               - Input System configuration with action maps for all platforms
-              - Basic scene management and state handling
+              - Basic scene management and state handling with SceneTree
               - Development tools setup (debugging, profiling integration)
               - Initial build pipeline and platform configuration
             examples:
@@ -496,7 +499,7 @@ sections:
               - Event system for decoupled component communication
               - Object pooling system for performance optimization
               - Basic UI framework and canvas configuration
-              - Settings and configuration management with ScriptableObjects
+              - Settings and configuration management with Custom Resources
       - id: phase-2-gameplay
         title: "Phase 2: Core Gameplay Implementation ({{duration}})"
         sections:
@@ -509,14 +512,14 @@ sections:
               - {{secondary_mechanic}} system with visual feedback
               - Game state management (playing, paused, game over)
               - Basic collision detection and response systems
-              - Animation system integration with Animator controllers
+              - Animation system integration with AnimationPlayer nodes
           - id: level-systems-design
             title: "Design: Level & Content Systems"
             type: bullet-list
             template: |
               - Scene loading and transition system
               - Level progression and unlock system
-              - Prefab-based level construction tools
+              - Scene-based level construction tools
               - {{level_generation}} level creation workflow
               - Collectibles and pickup systems
               - Victory/defeat condition implementation
@@ -605,7 +608,7 @@ sections:
                 title: Technical Requirements
                 type: checklist
                 items:
-                  - Code follows C# best practices
+                  - Code follows GDScript best practices
                   - Maintains stable frame rate on target devices
                   - No memory leaks or performance degradation
                   - "{{specific_technical_requirement}}"
