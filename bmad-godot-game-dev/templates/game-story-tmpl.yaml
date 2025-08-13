@@ -176,7 +176,7 @@ sections:
         template: |
           **Test Files:**
 
-          - `Assets/Tests/EditMode/{{component_name}}Tests.cs`
+          - `/Tests/EditMode/{{component_name}}Tests.gd`
 
           **Test Scenarios:**
 

@@ -240,7 +240,7 @@ sections:
               **Godot Scene Structure:**
               
               - **Environment:** {{tilemap_setup}}
-              - **Gameplay Objects:** {{prefab_list}}
+              - **Objects:** {{scene_list}}
               - **Lighting:** {{lighting_setup}}
               - **Audio:** {{audio_sources}}
               
@@ -250,9 +250,9 @@ sections:
               - **Challenge:** {{main_challenge}} - Mechanics: {{active_components}}
               - **Resolution:** {{completion_requirement}} - Trigger: {{completion_trigger}}
               
-              **Reusable Prefabs:**
+              **Reusable Scenes:**
               
-              - {{prefab_name}} - {{prefab_purpose}}
+              - {{scene_name}} - {{scene_purpose}}
             examples:
               - "Environment: TilemapRenderer with Platform tileset, Lighting: 2D Global Light + Point Lights"
       - id: level-progression
@@ -473,7 +473,7 @@ sections:
         examples:
           - "Phase 1: Godot Foundation & Core Systems: Project setup, input handling, basic scene management"
           - "Phase 2: Core Game Mechanics: Player controller, physics systems, basic gameplay loop"
-          - "Phase 3: Level Systems & Content Pipeline: Scene loading, prefab systems, level progression"
+          - "Phase 3: Level Systems & Content Pipeline: Scene loading, Gameplay systems, level progression"
           - "Phase 4: Polish & Platform Optimization: Performance tuning, platform-specific features, deployment"
       - id: phase-1-foundation
         title: "Phase 1: Godot Foundation & Core Systems ({{duration}})"
@@ -564,7 +564,7 @@ sections:
     examples:
       - "Epic 1: Godot Foundation & Core Systems: Project setup, input handling, basic scene management"
       - "Epic 2: Core Game Mechanics: Player controller, physics systems, basic gameplay loop"
-      - "Epic 3: Level Systems & Content Pipeline: Scene loading, prefab systems, level progression"
+      - "Epic 3: Level Systems & Content Pipeline: Scene loading, Gameplay systems, level progression"
       - "Epic 4: Polish & Platform Optimization: Performance tuning, platform-specific features, deployment"
 
   - id: epic-details
