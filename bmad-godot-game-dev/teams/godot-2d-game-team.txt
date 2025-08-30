@@ -4350,3 +4350,1016 @@ sections:
           **Save Data Structure:**
 
           ```gdscript
+          class_name PlayerProgress extends Resource
+          
+          @export var current_level: int
+          @export var unlocked_abilities: Array[bool]
+          @export var total_play_time: float
+          @export var completion_data: Dictionary
+          ```
+        examples:
+          - "current_level: 5, unlocked_abilities: [true, false, true], total_play_time: 3600.0"
+      - id: difficulty-curve
+        title: Difficulty Curve
+        instruction: Provide specific parameters for balancing that can be implemented as Godot Resources
+        template: |
+          **Tutorial Phase:** {{duration}} - {{difficulty_description}}
+          - Godot Config: {{resource_values}}
+
+          **Early Game:** {{duration}} - {{difficulty_description}}
+          - Godot Config: {{resource_values}}
+
+          **Mid Game:** {{duration}} - {{difficulty_description}}
+          - Godot Config: {{resource_values}}
+
+          **Late Game:** {{duration}} - {{difficulty_description}}
+          - Godot Config: {{resource_values}}
+        examples:
+          - "enemy speed: 2.0, jump height: 4.5, obstacle density: 0.3"
+      - id: economy-resources
+        title: Economy & Resources
+        condition: has_economy
+        instruction: Define any in-game currencies, resources, or collectibles with Godot implementation details
+        type: table
+        template: |
+          | Resource | Earn Rate | Spend Rate | Purpose | Cap | Godot Resource |
+          | -------- | --------- | ---------- | ------- | --- | -------------- |
+          | {{resource}} | {{rate}} | {{rate}} | {{use}} | {{max}} | {{resource_name}} |
+        examples:
+          - Coins, 1-3 per enemy, 10-50 per upgrade, Buy abilities, 9999, CurrencyData
+
+  - id: level-design-framework
+    title: Level Design Framework
+    instruction: Provide guidelines for level creation that developers can use to create Godot scenes and PackedScenes. Focus on modular design and reusable components.
+    elicit: true
+    sections:
+      - id: level-types
+        title: Level Types
+        repeatable: true
+        sections:
+          - id: level-type
+            title: "{{level_type_name}}"
+            template: |
+              **Purpose:** {{gameplay_purpose}}
+              **Target Duration:** {{target_time}}
+              **Key Elements:** {{required_mechanics}}
+              **Difficulty Rating:** {{relative_difficulty}}
+
+              **Godot Scene Structure:**
+
+              - **Environment:** {{tilemap_setup}}
+              - **Gameplay Objects:** {{scene_list}}
+              - **Lighting:** {{lighting_setup}}
+              - **Audio:** {{audio_sources}}
+
+              **Level Flow Template:**
+
+              - **Introduction:** {{intro_description}} - Area: {{godot_area_bounds}}
+              - **Challenge:** {{main_challenge}} - Mechanics: {{active_nodes}}
+              - **Resolution:** {{completion_requirement}} - Trigger: {{completion_trigger}}
+
+              **Reusable PackedScenes:**
+
+              - {{scene_name}} - {{scene_purpose}}
+            examples:
+              - "Environment: TileMap with Platform TileSet, Lighting: CanvasModulate + PointLight2D nodes"
+      - id: level-progression
+        title: Level Progression
+        template: |
+          **World Structure:** {{linear|hub|open}}
+          **Total Levels:** {{number}}
+          **Unlock Pattern:** {{progression_method}}
+          **Scene Management:** {{godot_scene_loading}}
+
+          **Godot Scene Organization:**
+
+          - Scene Naming: {{naming_convention}}
+          - PackedScene Groups: {{scene_groups}}
+          - Loading Screens: {{loading_implementation}}
+        examples:
+          - "Scene Naming: World{X}_Level{Y}_Name, PackedScene Groups: Levels_World1, World_Environments"
+
+  - id: technical-specifications
+    title: Technical Specifications
+    instruction: Define Godot-specific technical requirements that will guide architecture and implementation decisions. Reference Godot documentation and best practices.
+    elicit: true
+    choices:
+      renderer: [Forward+, Mobile, Compatibility]
+      input_system: [Legacy, Enhanced, Both]
+      physics: [2D Only, 3D Only, Hybrid]
+    sections:
+      - id: godot-configuration
+        title: Godot Project Configuration
+        template: |
+          **Godot Version:** {{godot_version}} (4.x LTS recommended)
+          **Renderer:** {{Forward+|Mobile|Compatibility}}
+          **Input System:** {{Legacy|Enhanced|Both}}
+          **Physics:** {{2D Only|3D Only|Hybrid}}
+          **Scripting:** {{GDScript|C#|Both}}
+
+          **Required Addons:**
+
+          - {{addon_name}} {{version}} - {{purpose}}
+
+          **Project Settings:**
+
+          - Rendering: {{rendering_config}}
+          - Physics Settings: {{physics_config}}
+          - Input Map: {{input_configuration}}
+        examples:
+          - gut 9.2.1 - Unit testing framework for GDScript
+          - "Rendering: Forward+ renderer, Physics: 2D physics with gravity -980"
+      - id: performance-requirements
+        title: Performance Requirements
+        template: |
+          **Frame Rate:** {{fps_target}} FPS (minimum {{min_fps}} on low-end devices)
+          **Memory Usage:** <{{memory_limit}}MB heap, <{{texture_memory}}MB textures
+          **Load Times:** <{{load_time}}s initial, <{{level_load}}s between levels
+          **Battery Usage:** Optimized for mobile devices - {{battery_target}} hours gameplay
+
+          **Godot Profiler Targets:**
+
+          - Process Frame Time: <{{process_time}}ms
+          - Physics Frame Time: <{{physics_time}}ms
+          - Memory Allocations: <{{memory_alloc}}MB per frame
+          - Draw Calls: <{{draw_calls}} per frame
+        examples:
+          - "60 FPS (minimum 30), Process: <16.67ms, Physics: <16.67ms, Memory: <4MB, Draws: <50"
+      - id: platform-specific
+        title: Platform Specific Requirements
+        template: |
+          **Desktop:**
+
+          - Resolution: {{min_resolution}} - {{max_resolution}}
+          - Input: Keyboard, Mouse, Gamepad ({{gamepad_support}})
+          - Export Target: {{desktop_targets}}
+
+          **Mobile:**
+
+          - Resolution: {{mobile_min}} - {{mobile_max}}
+          - Input: Touch, Accelerometer ({{sensor_support}})
+          - OS: iOS {{ios_min}}+, Android {{android_min}}+ (API {{api_level}})
+          - Device Requirements: {{device_specs}}
+
+          **Web (if applicable):**
+
+          - Threading: {{threading_support}}
+          - Browser Support: {{browser_list}}
+          - Compression: {{compression_format}}
+        examples:
+          - "Resolution: 1280x720 - 4K, Gamepad: Xbox/PlayStation controllers via Input Map"
+      - id: asset-requirements
+        title: Asset Requirements
+        instruction: Define asset specifications for Godot pipeline optimization
+        template: |
+          **2D Art Assets:**
+
+          - Sprites: {{sprite_resolution}} at {{ppu}} pixels per unit
+          - Texture Format: {{texture_compression}}
+          - Atlas Strategy: {{sprite_atlas_setup}}
+          - Animation: {{animation_type}} at {{framerate}} FPS
+
+          **Audio Assets:**
+
+          - Music: {{audio_format}} at {{sample_rate}} Hz
+          - SFX: {{sfx_format}} at {{sfx_sample_rate}} Hz
+          - Compression: {{audio_compression}}
+          - 3D Audio: {{spatial_audio}}
+
+          **UI Assets:**
+
+          - Canvas Resolution: {{ui_resolution}}
+          - UI Scale Mode: {{scale_mode}}
+          - Font: {{font_requirements}}
+          - Icon Sizes: {{icon_specifications}}
+        examples:
+          - "Sprites: 32x32 to 256x256 at 16 pixels per unit, Format: ETC2 RGBA8 for mobile/PNG for desktop"
+
+  - id: technical-architecture-requirements
+    title: Technical Architecture Requirements
+    instruction: Define high-level Godot architecture patterns and systems that the game must support. Focus on scalability and maintainability.
+    elicit: true
+    choices:
+      architecture_pattern: [Node Composition, Singleton Managers, Component System, Scene-Based]
+      save_system: [ConfigFile, JSON, Binary, Cloud]
+      audio_system: [Godot Audio, FMOD, Wwise]
+    sections:
+      - id: code-architecture
+        title: Code Architecture Pattern
+        template: |
+          **Architecture Pattern:** {{Node Composition|Singleton Managers|Component System|Scene-Based|Custom}}
+
+          **Core Systems Required:**
+
+          - **Scene Management:** {{scene_tree_approach}}
+          - **State Management:** {{state_pattern_implementation}}
+          - **Event System:** {{signal_system_choice}}
+          - **Object Pooling:** {{pooling_strategy}}
+          - **Save/Load System:** {{save_system_approach}}
+
+          **Folder Structure:**
+
+          ```
+          scenes/
+          ├── main/
+          ├── levels/
+          ├── ui/
+          └── components/
+          scripts/
+          ├── {{folder_structure}}
+          assets/
+          ├── 2d/
+          ├── audio/
+          └── fonts/
+          ```
+
+          **Naming Conventions:**
+
+          - Scripts: {{script_naming}}
+          - PackedScenes: {{scene_naming}}
+          - Scenes: {{scene_naming}}
+        examples:
+          - "Architecture: Node-based composition with Resource data containers"
+          - "Scripts: snake_case (player_controller.gd), PackedScenes: Player.tscn, Scenes: level_01_forest.tscn"
+      - id: godot-systems-integration
+        title: Godot Systems Integration
+        template: |
+          **Required Godot Systems:**
+
+          - **Input System:** {{input_map_implementation}}
+          - **Animation System:** {{animation_player_approach}}
+          - **Physics Integration:** {{physics2d_usage}}
+          - **Rendering Features:** {{rendering_requirements}}
+          - **Scene Loading:** {{scene_loading_strategy}}
+
+          **Third-Party Integrations:**
+
+          - {{integration_name}}: {{integration_purpose}}
+
+          **Performance Systems:**
+
+          - **Profiling Integration:** {{profiling_setup}}
+          - **Memory Management:** {{memory_strategy}}
+          - **Export Pipeline:** {{export_automation}}
+        examples:
+          - "Input System: Input Map for Menu/Gameplay contexts with device switching"
+          - "Tweening: Godot Tween nodes for smooth UI transitions and gameplay animations"
+      - id: data-management
+        title: Data Management
+        template: |
+          **Save Data Architecture:**
+
+          - **Format:** {{ConfigFile|JSON|Binary|Cloud}}
+          - **Structure:** {{save_data_organization}}
+          - **Encryption:** {{security_approach}}
+          - **Cloud Sync:** {{cloud_integration}}
+
+          **Configuration Data:**
+
+          - **Resources:** {{custom_resource_usage}}
+          - **Settings Management:** {{settings_system}}
+          - **Localization:** {{localization_approach}}
+
+          **Runtime Data:**
+
+          - **Caching Strategy:** {{cache_implementation}}
+          - **Memory Pools:** {{pooling_objects}}
+          - **Scene References:** {{scene_reference_system}}
+        examples:
+          - "Save Data: JSON format with AES encryption, stored in user://"
+          - "Resources: Game settings, level configurations, character data"
+
+  - id: development-phases
+    title: Development Phases & Epic Planning
+    instruction: Break down the Godot development into phases that can be converted to agile epics. Each phase should deliver deployable functionality following Godot best practices.
+    elicit: true
+    sections:
+      - id: phases-overview
+        title: Phases Overview
+        instruction: Present a high-level list of all phases for user approval. Each phase's design should deliver significant Godot functionality.
+        type: numbered-list
+        examples:
+          - "Phase 1: Godot Foundation & Core Systems: Project setup, input handling, basic scene management"
+          - "Phase 2: Core Game Mechanics: Player controller, physics systems, basic gameplay loop"
+          - "Phase 3: Level Systems & Content Pipeline: Scene loading, PackedScene systems, level progression"
+          - "Phase 4: Polish & Platform Optimization: Performance tuning, platform-specific features, deployment"
+      - id: phase-1-foundation
+        title: "Phase 1: Godot Foundation & Core Systems ({{duration}})"
+        sections:
+          - id: foundation-design
+            title: "Design: Godot Project Foundation"
+            type: bullet-list
+            template: |
+              - Godot project setup with proper folder structure and naming conventions
+              - Core architecture implementation ({{architecture_pattern}})
+              - Input Map configuration with actions for all platforms
+              - Basic scene management and state handling
+              - Development tools setup (debugging, profiling integration)
+              - Initial export pipeline and platform configuration
+            examples:
+              - "Input Map: Configure Input actions with InputEventKey and InputEventJoypadButton"
+          - id: core-systems-design
+            title: "Design: Essential Game Systems"
+            type: bullet-list
+            template: |
+              - Save/Load system implementation with {{save_format}} format
+              - Audio system setup with {{audio_system}} integration
+              - Signal system for decoupled node communication
+              - Object pooling system for performance optimization
+              - Basic UI framework and Control node configuration
+              - Settings and configuration management with Resources
+      - id: phase-2-gameplay
+        title: "Phase 2: Core Gameplay Implementation ({{duration}})"
+        sections:
+          - id: gameplay-mechanics-design
+            title: "Design: Primary Game Mechanics"
+            type: bullet-list
+            template: |
+              - Player controller with {{movement_type}} movement system
+              - {{primary_mechanic}} implementation with Godot physics
+              - {{secondary_mechanic}} system with visual feedback
+              - Game state management (playing, paused, game over)
+              - Basic collision detection and response systems
+              - Animation system integration with AnimationPlayer nodes
+          - id: level-systems-design
+            title: "Design: Level & Content Systems"
+            type: bullet-list
+            template: |
+              - Scene loading and transition system
+              - Level progression and unlock system
+              - PackedScene-based level construction tools
+              - {{level_generation}} level creation workflow
+              - Collectibles and pickup systems
+              - Victory/defeat condition implementation
+      - id: phase-3-polish
+        title: "Phase 3: Polish & Optimization ({{duration}})"
+        sections:
+          - id: performance-design
+            title: "Design: Performance & Platform Optimization"
+            type: bullet-list
+            template: |
+              - Godot Profiler analysis and optimization passes
+              - Memory management and garbage collection optimization
+              - Asset optimization (texture compression, audio compression)
+              - Platform-specific performance tuning
+              - Export size optimization and asset bundling
+              - Quality settings configuration for different device tiers
+          - id: user-experience-design
+            title: "Design: User Experience & Polish"
+            type: bullet-list
+            template: |
+              - Complete UI/UX implementation with responsive design
+              - Audio implementation with dynamic mixing
+              - Visual effects and particle systems
+              - Accessibility features implementation
+              - Tutorial and onboarding flow
+              - Final testing and bug fixing across all platforms
+
+  - id: epic-list
+    title: Epic List
+    instruction: |
+      Present a high-level list of all epics for user approval. Each epic should have a title and a short (1 sentence) goal statement. This allows the user to review the overall structure before diving into details.
+
+      CRITICAL: Epics MUST be logically sequential following agile best practices:
+
+      - Each epic should be focused on a single phase and it's design from the development-phases section and deliver a significant, end-to-end, fully deployable increment of testable functionality
+      - Epic 1 must establish Phase 1: Godot Foundation & Core Systems (Project setup, input handling, basic scene management) unless we are adding new functionality to an existing app, while also delivering an initial piece of functionality, remember this when we produce the stories for the first epic!
+      - Each subsequent epic builds upon previous epics' functionality delivering major blocks of functionality that provide tangible value to users or business when deployed
+      - Not every project needs multiple epics, an epic needs to deliver value. For example, a scene, PackedScene, or Resource completed can deliver value even if a complete game loop is not complete and planned for a separate epic.
+      - Err on the side of less epics, but let the user know your rationale and offer options for splitting them if it seems some are too large or focused on disparate things.
+      - Cross Cutting Concerns should flow through epics and stories and not be final stories. For example, adding a logging framework as a last story of an epic, or at the end of a project as a final epic or story would be terrible as we would not have logging from the beginning.
+    elicit: true
+    examples:
+      - "Epic 1: Godot Foundation & Core Systems: Project setup, input handling, basic scene management"
+      - "Epic 2: Core Game Mechanics: Player controller, physics systems, basic gameplay loop"
+      - "Epic 3: Level Systems & Content Pipeline: Scene loading, PackedScene systems, level progression"
+      - "Epic 4: Polish & Platform Optimization: Performance tuning, platform-specific features, deployment"
+
+  - id: epic-details
+    title: Epic {{epic_number}} {{epic_title}}
+    repeatable: true
+    instruction: |
+      After the epic list is approved, present each epic with all its stories and acceptance criteria as a complete review unit.
+
+      For each epic provide expanded goal (2-3 sentences describing the objective and value all the stories will achieve).
+
+      CRITICAL STORY SEQUENCING REQUIREMENTS:
+
+      - Stories within each epic MUST be logically sequential
+      - Each story should be a "vertical slice" delivering complete functionality aside from early enabler stories for project foundation
+      - No story should depend on work from a later story or epic
+      - Identify and note any direct prerequisite stories
+      - Focus on "what" and "why" not "how" (leave technical implementation to Architect) yet be precise enough to support a logical sequential order of operations from story to story.
+      - Ensure each story delivers clear user or business value, try to avoid enablers and build them into stories that deliver value.
+      - Size stories for AI agent execution: Each story must be completable by a single AI agent in one focused session without context overflow
+      - Think "junior developer working for 2-4 hours" - stories must be small, focused, and self-contained
+      - If a story seems complex, break it down further as long as it can deliver a vertical slice
+    elicit: true
+    template: "{{epic_goal}}"
+    sections:
+      - id: story
+        title: Story {{epic_number}}.{{story_number}} {{story_title}}
+        repeatable: true
+        instruction: Provide a clear, concise description of what this story implements. Focus on the specific game feature or system being built. Reference the GDD section that defines this feature and reference the gamearchitecture section for additional implementation and integration specifics.
+        template: "{{clear_description_of_what_needs_to_be_implemented}}"
+        sections:
+          - id: acceptance-criteria
+            title: Acceptance Criteria
+            instruction: Define specific, testable conditions that must be met for the story to be considered complete. Each criterion should be verifiable and directly related to gameplay functionality.
+            sections:
+              - id: functional-requirements
+                title: Functional Requirements
+                type: checklist
+                items:
+                  - "{{specific_functional_requirement}}"
+              - id: technical-requirements
+                title: Technical Requirements
+                type: checklist
+                items:
+                  - Code follows GDScript best practices
+                  - Maintains stable frame rate on target devices
+                  - No memory leaks or performance degradation
+                  - "{{specific_technical_requirement}}"
+              - id: game-design-requirements
+                title: Game Design Requirements
+                type: checklist
+                items:
+                  - "{{gameplay_requirement_from_gdd}}"
+                  - "{{balance_requirement_if_applicable}}"
+                  - "{{player_experience_requirement}}"
+
+  - id: success-metrics
+    title: Success Metrics & Quality Assurance
+    instruction: Define measurable goals for the Godot game development project with specific targets that can be validated through Godot profiling and testing tools.
+    elicit: true
+    sections:
+      - id: technical-metrics
+        title: Technical Performance Metrics
+        type: bullet-list
+        template: |
+          - **Frame Rate:** Consistent {{fps_target}} FPS with <5% drops below {{min_fps}}
+          - **Load Times:** Initial load <{{initial_load}}s, level transitions <{{level_load}}s
+          - **Memory Usage:** Heap memory <{{heap_limit}}MB, texture memory <{{texture_limit}}MB
+          - **Crash Rate:** <{{crash_threshold}}% across all supported platforms
+          - **Export Size:** Final export <{{size_limit}}MB for mobile, <{{desktop_limit}}MB for desktop
+          - **Battery Life:** Mobile gameplay sessions >{{battery_target}} hours on average device
+        examples:
+          - "Frame Rate: Consistent 60 FPS with <5% drops below 45 FPS on target hardware"
+          - "Crash Rate: <0.5% across iOS/Android, <0.1% on desktop platforms"
+      - id: gameplay-metrics
+        title: Gameplay & User Engagement Metrics
+        type: bullet-list
+        template: |
+          - **Tutorial Completion:** {{tutorial_rate}}% of players complete basic tutorial
+          - **Level Progression:** {{progression_rate}}% reach level {{target_level}} within first session
+          - **Session Duration:** Average session length {{session_target}} minutes
+          - **Player Retention:** Day 1: {{d1_retention}}%, Day 7: {{d7_retention}}%, Day 30: {{d30_retention}}%
+          - **Gameplay Completion:** {{completion_rate}}% complete main game content
+          - **Control Responsiveness:** Input lag <{{input_lag}}ms on all platforms
+        examples:
+          - "Tutorial Completion: 85% of players complete movement and basic mechanics tutorial"
+          - "Session Duration: Average 15-20 minutes per session for mobile, 30-45 minutes for desktop"
+      - id: platform-specific-metrics
+        title: Platform-Specific Quality Metrics
+        type: table
+        template: |
+          | Platform | Frame Rate | Load Time | Memory | Export Size | Battery |
+          | -------- | ---------- | --------- | ------ | ----------- | ------- |
+          | {{platform}} | {{fps}} | {{load}} | {{memory}} | {{size}} | {{battery}} |
+        examples:
+          - iOS, 60 FPS, <3s, <150MB, <80MB, 3+ hours
+          - Android, 60 FPS, <5s, <200MB, <100MB, 2.5+ hours
+
+  - id: next-steps-integration
+    title: Next Steps & BMad Integration
+    instruction: Define how this GDD integrates with BMad's agent workflow and what follow-up documents or processes are needed.
+    sections:
+      - id: architecture-handoff
+        title: Godot Architecture Requirements
+        instruction: Summary of key architectural decisions that need to be implemented in Godot project setup
+        type: bullet-list
+        template: |
+          - Godot {{godot_version}} project with {{renderer}} renderer
+          - {{architecture_pattern}} code architecture with {{folder_structure}}
+          - Required addons: {{essential_addons}}
+          - Performance targets: {{key_performance_metrics}}
+          - Platform exports: {{deployment_targets}}
+      - id: story-creation-guidance
+        title: Story Creation Guidance for SM Agent
+        instruction: Provide guidance for the Story Manager (SM) agent on how to break down this GDD into implementable user stories
+        template: |
+          **Epic Prioritization:** {{epic_order_rationale}}
+
+          **Story Sizing Guidelines:**
+
+          - Foundation stories: {{foundation_story_scope}}
+          - Feature stories: {{feature_story_scope}}
+          - Polish stories: {{polish_story_scope}}
+
+          **Godot-Specific Story Considerations:**
+
+          - Each story should result in testable Godot scenes or PackedScenes
+          - Include specific Godot nodes and systems in acceptance criteria
+          - Consider cross-platform testing requirements with export templates
+          - Account for Godot build and deployment steps
+        examples:
+          - "Foundation stories: Individual Godot systems (Input Map, Audio, Scene Tree) - 1-2 days each"
+          - "Feature stories: Complete gameplay mechanics with UI and feedback - 2-4 days each"
+      - id: recommended-agents
+        title: Recommended BMad Agent Sequence
+        type: numbered-list
+        template: |
+          1. **{{agent_name}}**: {{agent_responsibility}}
+        examples:
+          - "Godot Architect: Create detailed technical architecture document with specific Godot implementation patterns"
+          - "Godot Developer: Implement core systems and gameplay mechanics according to architecture"
+          - "QA Tester: Validate performance metrics and cross-platform functionality"
+==================== END: .bmad-godot-game-dev/templates/game-design-doc-tmpl.yaml ====================
+
+==================== START: .bmad-godot-game-dev/templates/level-design-doc-tmpl.yaml ====================
+# <!-- Powered by BMAD™ Core -->
+template:
+  id: level-design-doc-template-v2
+  name: Level Design Document
+  version: 2.1
+  output:
+    format: markdown
+    filename: docs/level-design-document.md
+    title: "{{game_title}} Level Design Document"
+
+workflow:
+  mode: interactive
+
+sections:
+  - id: initial-setup
+    instruction: |
+      This template creates comprehensive level design documentation that guides both content creation and technical implementation. This document should provide enough detail for developers to create level loading systems and for designers to create specific levels.
+
+      If available, review: Game Design Document (GDD), Game Architecture Document. This document should align with the game mechanics and technical systems defined in those documents.
+
+  - id: introduction
+    title: Introduction
+    instruction: Establish the purpose and scope of level design for this game
+    content: |
+      This document defines the level design framework for {{game_title}}, providing guidelines for creating engaging, balanced levels that support the core gameplay mechanics defined in the Game Design Document.
+
+      This framework ensures consistency across all levels while providing flexibility for creative level design within established technical and design constraints.
+    sections:
+      - id: change-log
+        title: Change Log
+        instruction: Track document versions and changes
+        type: table
+        template: |
+          | Date | Version | Description | Author |
+          | :--- | :------ | :---------- | :----- |
+
+  - id: level-design-philosophy
+    title: Level Design Philosophy
+    instruction: Establish the overall approach to level design based on the game's core pillars and mechanics. Apply `tasks#advanced-elicitation` after presenting this section.
+    sections:
+      - id: design-principles
+        title: Design Principles
+        instruction: Define 3-5 core principles that guide all level design decisions
+        type: numbered-list
+        template: |
+          **{{principle_name}}** - {{description}}
+      - id: player-experience-goals
+        title: Player Experience Goals
+        instruction: Define what players should feel and learn in each level category
+        template: |
+          **Tutorial Levels:** {{experience_description}}
+          **Standard Levels:** {{experience_description}}
+          **Challenge Levels:** {{experience_description}}
+          **Boss Levels:** {{experience_description}}
+      - id: level-flow-framework
+        title: Level Flow Framework
+        instruction: Define the standard structure for level progression
+        template: |
+          **Introduction Phase:** {{duration}} - {{purpose}}
+          **Development Phase:** {{duration}} - {{purpose}}
+          **Climax Phase:** {{duration}} - {{purpose}}
+          **Resolution Phase:** {{duration}} - {{purpose}}
+
+  - id: level-categories
+    title: Level Categories
+    instruction: Define different types of levels based on the GDD requirements. Each category should be specific enough for implementation.
+    repeatable: true
+    sections:
+      - id: level-category
+        title: "{{category_name}} Levels"
+        template: |
+          **Purpose:** {{gameplay_purpose}}
+
+          **Target Duration:** {{min_time}} - {{max_time}} minutes
+
+          **Difficulty Range:** {{difficulty_scale}}
+
+          **Key Mechanics Featured:**
+
+          - {{mechanic_1}} - {{usage_description}}
+          - {{mechanic_2}} - {{usage_description}}
+
+          **Player Objectives:**
+
+          - Primary: {{primary_objective}}
+          - Secondary: {{secondary_objective}}
+          - Hidden: {{secret_objective}}
+
+          **Success Criteria:**
+
+          - {{completion_requirement_1}}
+          - {{completion_requirement_2}}
+
+          **Technical Requirements:**
+
+          - Maximum entities: {{entity_limit}}
+          - Performance target: {{fps_target}} FPS
+          - Memory budget: {{memory_limit}}MB
+          - Asset requirements: {{asset_needs}}
+
+  - id: level-progression-system
+    title: Level Progression System
+    instruction: Define how players move through levels and how difficulty scales
+    sections:
+      - id: world-structure
+        title: World Structure
+        instruction: Based on GDD requirements, define the overall level organization
+        template: |
+          **Organization Type:** {{linear|hub_world|open_world}}
+
+          **Total Level Count:** {{number}}
+
+          **World Breakdown:**
+
+          - World 1: {{level_count}} levels - {{theme}} - {{difficulty_range}}
+          - World 2: {{level_count}} levels - {{theme}} - {{difficulty_range}}
+          - World 3: {{level_count}} levels - {{theme}} - {{difficulty_range}}
+      - id: difficulty-progression
+        title: Difficulty Progression
+        instruction: Define how challenge increases across the game
+        sections:
+          - id: progression-curve
+            title: Progression Curve
+            type: code
+            language: text
+            template: |
+              Difficulty
+                  ^     ___/```
+                  |    /
+                  |   /     ___/```
+                  |  /     /
+                  | /     /
+                  |/     /
+                  +-----------> Level Number
+                 Tutorial  Early  Mid  Late
+          - id: scaling-parameters
+            title: Scaling Parameters
+            type: bullet-list
+            template: |
+              - Enemy count: {{start_count}} → {{end_count}}
+              - Enemy difficulty: {{start_diff}} → {{end_diff}}
+              - Level complexity: {{start_complex}} → {{end_complex}}
+              - Time pressure: {{start_time}} → {{end_time}}
+      - id: unlock-requirements
+        title: Unlock Requirements
+        instruction: Define how players access new levels
+        template: |
+          **Progression Gates:**
+
+          - Linear progression: Complete previous level
+          - Star requirements: {{star_count}} stars to unlock
+          - Skill gates: Demonstrate {{skill_requirement}}
+          - Optional content: {{unlock_condition}}
+
+  - id: level-design-components
+    title: Level Design Components
+    instruction: Define the building blocks used to create levels
+    sections:
+      - id: environmental-elements
+        title: Environmental Elements
+        instruction: Define all environmental components that can be used in levels
+        template: |
+          **Terrain Types:**
+
+          - {{terrain_1}}: {{properties_and_usage}}
+          - {{terrain_2}}: {{properties_and_usage}}
+
+          **Interactive Objects:**
+
+          - {{object_1}}: {{behavior_and_purpose}}
+          - {{object_2}}: {{behavior_and_purpose}}
+
+          **Hazards and Obstacles:**
+
+          - {{hazard_1}}: {{damage_and_behavior}}
+          - {{hazard_2}}: {{damage_and_behavior}}
+      - id: collectibles-rewards
+        title: Collectibles and Rewards
+        instruction: Define all collectible items and their placement rules
+        template: |
+          **Collectible Types:**
+
+          - {{collectible_1}}: {{value_and_purpose}}
+          - {{collectible_2}}: {{value_and_purpose}}
+
+          **Placement Guidelines:**
+
+          - Mandatory collectibles: {{placement_rules}}
+          - Optional collectibles: {{placement_rules}}
+          - Secret collectibles: {{placement_rules}}
+
+          **Reward Distribution:**
+
+          - Easy to find: {{percentage}}%
+          - Moderate challenge: {{percentage}}%
+          - High skill required: {{percentage}}%
+      - id: enemy-placement-framework
+        title: Enemy Placement Framework
+        instruction: Define how enemies should be placed and balanced in levels
+        template: |
+          **Enemy Categories:**
+
+          - {{enemy_type_1}}: {{behavior_and_usage}}
+          - {{enemy_type_2}}: {{behavior_and_usage}}
+
+          **Placement Principles:**
+
+          - Introduction encounters: {{guideline}}
+          - Standard encounters: {{guideline}}
+          - Challenge encounters: {{guideline}}
+
+          **Difficulty Scaling:**
+
+          - Enemy count progression: {{scaling_rule}}
+          - Enemy type introduction: {{pacing_rule}}
+          - Encounter complexity: {{complexity_rule}}
+
+  - id: level-creation-guidelines
+    title: Level Creation Guidelines
+    instruction: Provide specific guidelines for creating individual levels
+    sections:
+      - id: level-layout-principles
+        title: Level Layout Principles
+        template: |
+          **Spatial Design:**
+
+          - Grid size: {{grid_dimensions}}
+          - Minimum path width: {{width_units}}
+          - Maximum vertical distance: {{height_units}}
+          - Safe zones placement: {{safety_guidelines}}
+
+          **Navigation Design:**
+
+          - Clear path indication: {{visual_cues}}
+          - Landmark placement: {{landmark_rules}}
+          - Dead end avoidance: {{dead_end_policy}}
+          - Multiple path options: {{branching_rules}}
+      - id: pacing-and-flow
+        title: Pacing and Flow
+        instruction: Define how to control the rhythm and pace of gameplay within levels
+        template: |
+          **Action Sequences:**
+
+          - High intensity duration: {{max_duration}}
+          - Rest period requirement: {{min_rest_time}}
+          - Intensity variation: {{pacing_pattern}}
+
+          **Learning Sequences:**
+
+          - New mechanic introduction: {{teaching_method}}
+          - Practice opportunity: {{practice_duration}}
+          - Skill application: {{application_context}}
+      - id: challenge-design
+        title: Challenge Design
+        instruction: Define how to create appropriate challenges for each level type
+        template: |
+          **Challenge Types:**
+
+          - Execution challenges: {{skill_requirements}}
+          - Puzzle challenges: {{complexity_guidelines}}
+          - Time challenges: {{time_pressure_rules}}
+          - Resource challenges: {{resource_management}}
+
+          **Difficulty Calibration:**
+
+          - Skill check frequency: {{frequency_guidelines}}
+          - Failure recovery: {{retry_mechanics}}
+          - Hint system integration: {{help_system}}
+
+  - id: technical-implementation
+    title: Technical Implementation
+    instruction: Define technical requirements for level implementation
+    sections:
+      - id: level-data-structure
+        title: Level Data Structure
+        instruction: Define how level data should be structured for implementation
+        template: |
+          **Level File Format:**
+
+          - Data format: {{json|yaml|custom}}
+          - File naming: `level_{{world}}_{{number}}.{{extension}}`
+          - Data organization: {{structure_description}}
+        sections:
+          - id: required-data-fields
+            title: Required Data Fields
+            type: code
+            language: json
+            template: |
+              {
+                "levelId": "{{unique_identifier}}",
+                "worldId": "{{world_identifier}}",
+                "difficulty": {{difficulty_value}},
+                "targetTime": {{completion_time_seconds}},
+                "objectives": {
+                  "primary": "{{primary_objective}}",
+                  "secondary": ["{{secondary_objectives}}"],
+                  "hidden": ["{{secret_objectives}}"]
+                },
+                "layout": {
+                  "width": {{grid_width}},
+                  "height": {{grid_height}},
+                  "tilemap": "{{tilemap_reference}}"
+                },
+                "entities": [
+                  {
+                    "type": "{{entity_type}}",
+                    "position": {"x": {{x}}, "y": {{y}}},
+                    "properties": {{entity_properties}}
+                  }
+                ]
+              }
+      - id: asset-integration
+        title: Asset Integration
+        instruction: Define how level assets are organized and loaded
+        template: |
+          **TileMap Requirements:**
+
+          - Tile size: {{tile_dimensions}}px
+          - TileSet organization: {{tileset_structure}}
+          - Layer organization: {{layer_system}}
+          - Collision data: {{collision_format}}
+
+          **Audio Integration:**
+
+          - Background music: {{music_requirements}}
+          - Ambient sounds: {{ambient_system}}
+          - Dynamic audio: {{dynamic_audio_rules}}
+      - id: performance-optimization
+        title: Performance Optimization
+        instruction: Define performance requirements for level systems
+        template: |
+          **Entity Limits:**
+
+          - Maximum active entities: {{entity_limit}}
+          - Maximum particles: {{particle_limit}}
+          - Maximum audio sources: {{audio_limit}}
+
+          **Memory Management:**
+
+          - Texture memory budget: {{texture_memory}}MB
+          - Audio memory budget: {{audio_memory}}MB
+          - Level loading time: <{{load_time}}s
+
+          **Culling and LOD:**
+
+          - Off-screen culling: {{culling_distance}}
+          - Level-of-detail rules: {{lod_system}}
+          - Asset streaming: {{streaming_requirements}}
+
+  - id: level-testing-framework
+    title: Level Testing Framework
+    instruction: Define how levels should be tested and validated using GUT and Godot profiling tools
+    sections:
+      - id: automated-testing
+        title: Automated Testing
+        template: |
+          **Performance Testing:**
+
+          - Frame rate validation: Maintain {{fps_target}} FPS
+          - Memory usage monitoring: Stay under {{memory_limit}}MB
+          - Loading time verification: Complete in <{{load_time}}s
+
+          **Gameplay Testing:**
+
+          - Completion path validation: All objectives achievable
+          - Collectible accessibility: All items reachable
+          - Softlock prevention: No unwinnable states
+      - id: manual-testing-protocol
+        title: Manual Testing Protocol
+        sections:
+          - id: playtesting-checklist
+            title: Playtesting Checklist
+            type: checklist
+            items:
+              - Level completes within target time range
+              - All mechanics function correctly
+              - Difficulty feels appropriate for level category
+              - Player guidance is clear and effective
+              - No exploits or sequence breaks (unless intended)
+          - id: player-experience-testing
+            title: Player Experience Testing
+            type: checklist
+            items:
+              - Tutorial levels teach effectively
+              - Challenge feels fair and rewarding
+              - Flow and pacing maintain engagement
+              - Audio and visual feedback support gameplay
+      - id: balance-validation
+        title: Balance Validation
+        template: |
+          **Metrics Collection:**
+
+          - Completion rate: Target {{completion_percentage}}%
+          - Average completion time: {{target_time}} ± {{variance}}
+          - Death count per level: <{{max_deaths}}
+          - Collectible discovery rate: {{discovery_percentage}}%
+
+          **Iteration Guidelines:**
+
+          - Adjustment criteria: {{criteria_for_changes}}
+          - Testing sample size: {{minimum_testers}}
+          - Validation period: {{testing_duration}}
+
+  - id: content-creation-pipeline
+    title: Content Creation Pipeline
+    instruction: Define the workflow for creating new levels in Godot
+    sections:
+      - id: design-phase
+        title: Design Phase
+        template: |
+          **Concept Development:**
+
+          1. Define level purpose and goals
+          2. Create rough layout sketch
+          3. Identify key mechanics and challenges
+          4. Estimate difficulty and duration
+
+          **Documentation Requirements:**
+
+          - Level design brief
+          - Layout diagrams
+          - Mechanic integration notes
+          - Asset requirement list
+      - id: implementation-phase
+        title: Implementation Phase
+        template: |
+          **Technical Implementation:**
+
+          1. Create level data file
+          2. Build TileMap and layout
+          3. Place entities and objects
+          4. Configure level logic and triggers
+          5. Integrate audio and visual effects
+
+          **Quality Assurance:**
+
+          1. Automated testing execution
+          2. Internal playtesting
+          3. Performance validation
+          4. Bug fixing and polish
+      - id: integration-phase
+        title: Integration Phase
+        template: |
+          **Game Integration:**
+
+          1. Level progression integration
+          2. Save system compatibility
+          3. Analytics integration
+          4. Achievement system integration
+
+          **Final Validation:**
+
+          1. Full game context testing
+          2. Performance regression testing
+          3. Platform compatibility verification
+          4. Final approval and release
+
+  - id: success-metrics
+    title: Success Metrics
+    instruction: Define how to measure level design success
+    sections:
+      - id: player-engagement
+        title: Player Engagement
+        type: bullet-list
+        template: |
+          - Level completion rate: {{target_rate}}%
+          - Replay rate: {{replay_target}}%
+          - Time spent per level: {{engagement_time}}
+          - Player satisfaction scores: {{satisfaction_target}}/10
+      - id: technical-performance
+        title: Technical Performance
+        type: bullet-list
+        template: |
+          - Frame rate consistency: {{fps_consistency}}%
+          - Loading time compliance: {{load_compliance}}%
+          - Memory usage efficiency: {{memory_efficiency}}%
+          - Crash rate: <{{crash_threshold}}%
+      - id: design-quality
+        title: Design Quality
+        type: bullet-list
+        template: |
+          - Difficulty curve adherence: {{curve_accuracy}}
+          - Mechanic integration effectiveness: {{integration_score}}
+          - Player guidance clarity: {{guidance_score}}
+          - Content accessibility: {{accessibility_rate}}%
+==================== END: .bmad-godot-game-dev/templates/level-design-doc-tmpl.yaml ====================
