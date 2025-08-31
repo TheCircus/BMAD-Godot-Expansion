@@ -91,7 +91,7 @@ sections:
           }
 
           // {{class_name}}
-          public class {{ClassName}} : MonoBehaviour
+          public class {{ClassName}} : Behaviour
           {
               private {{type}} _{{property}};
 
