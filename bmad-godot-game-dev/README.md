@@ -43,12 +43,7 @@ graph TD
     style E fill:#fff3e0,color:#000
     style E2 fill:#fff3e0,color:#000
     style F fill:#fff3e0,color:#000
-    style F2 fill:#e3f2fd,color:#000
-    style F3 fill:#e1f5fe,color:#000
-    style F4 fill:#e1f5fe,color:#000
     style G fill:#e3f2fd,color:#000
-    style H fill:#f3e5f5,color:#000
-    style H2 fill:#f3e5f5,color:#000
     style I fill:#f9ab00,color:#fff
     style J fill:#e3f2fd,color:#000
     style K fill:#34a853,color:#fff
