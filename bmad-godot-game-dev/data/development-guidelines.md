@@ -167,7 +167,7 @@ func take_damage(amount: int):
 **Custom Resource Classes:**
 
 ```gdscript
-# WeaponData.gd - Custom Resource (Godot's equivalent to Unity's ScriptableObject)
+# WeaponData.gd - Custom Resource
 extends Resource
 class_name WeaponData
 

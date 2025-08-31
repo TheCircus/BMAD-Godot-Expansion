@@ -1,6 +1,6 @@
-# BMad-Method BMAdUnity Expansion Code User Guide
+# BMad-Method Godot Expansion Code User Guide
 
-This guide will help you understand and effectively use the BMad Method Unity Expansion Pack for agile ai driven planning and development.
+This guide will help you understand and effectively use the BMad Method Godot Expansion Pack for agile ai driven planning and development.
 
 ## The BMad Plan and Execute Workflow
 
